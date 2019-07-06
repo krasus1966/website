@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>分类管理</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+</head>
+<body>
+<div>
+    <!--导航-->
+    <nav th:replace="fragments/fragments::nav(0)" class="ui inverted attached segment index-padding-tb-mini"></nav>
+
+    <div class="ui attached pointing menu">
+        <div class="ui container">
+            <div class="right menu">
+                <a href="#" class="item">发布</a>
+                <a href="#" class="teal active item">列表</a>
+            </div>
+        </div>
+    </div>
+    <div class="paddings">
+        <!--中间内容-->
+        <div class="index-container index-padding-tb-big">
+            <div class="ui container">
+                <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                    <i class="close icon"></i>
+                    <div class="header">提示：</div>
+                    <p th:text="${message}">操作信息</p>
+                </div>
+                <table class="ui table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>分类名称</th>
+
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr  th:each="type,iterStat:${page.content}">
+                        <td th:text="${iterStat.count}">1</td>
+                        <td th:text="${type.name}">分类名称</td>
+                        <td>
+                            <a th:href="@{/user/types/{id}/input(id=${type.id})}" class="ui mini teal button">编辑</a>
+                            <a th:href="@{/user/types/{id}/delete(id=${type.id})}" class="ui mini red button">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th colspan="6">
+                            <div class="ui right floated mini pagination menu"  th:if="${page.totalPages}>1">
+                                <!--                            <a href="" class="icon item">-->
+                                <!--                                <i class="left chevron icon"></i>-->
+                                <!--                            </a>-->
+                                <!--                            <a href="#" class="item">1</a>-->
+                                <!--                            <a href="#" class="item">1</a>-->
+                                <!--                            <a href="#" class="item">1</a>-->
+                                <!--                            <a href="#" class="item">1</a>-->
+                                <!--                            <a href="#" class="icon item"><i class="right chevron icon"></i></a>-->
+                                <a href="#" th:href="@{/user/types(page=${page.number}-1)}" class="item" th:unless="${page.first}">上一页</a>
+                                <a href="#" th:href="@{/user/types(page=${page.number}+1)}"  class="item" th:unless="${page.last}">下一页</a>
+                            </div>
+                            <a href="#" th:href="@{/user/types/input}" class="ui mini teal basic button">新增</a>
+                        </th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!--底部footer-->
+    <footer th:replace="fragments/fragments::footer"></footer>
+</div>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.index-item').toggleClass('index-mobile-hide');
+    });
+
+    $('.ui.user.dropdown').dropdown({
+        on: 'hover',
+    });
+
+    $('.ui.type.dropdown').dropdown();
+
+    $('.message .close').on('click',function () {
+        $(this).closest(".message").transition('fade');
+    })
+</script>
+</body>
+</html>

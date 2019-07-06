@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+</head>
+<body>
+<nav th:replace="fragments/fragments::nav(2)" class="ui inverted attached segment index-padding-tb-mini"></nav>
+<div class="paddings">
+    <div class="index-container index-padding-tb-big">
+        <div>
+            <div class="ui stackable grid">
+                <!--            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">-->
+                <!--                <i class="close icon"></i>-->
+                <!--                <div class="header">提示：</div>-->
+                <!--                <p th:text="${message}">操作信息</p>-->
+                <!--            </div>-->
+                <!--博客列表-->
+
+
+                <div class="twelve wide column">
+                    <div class="ui top attached segment">
+                        <div class="ui middle aligned two column grid">
+                            <div class="column">
+                                <h3 class="ui teal header">所有问题</h3>
+                            </div>
+                            <div class="right aligned column">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui attached  segment">
+                        <div class="ui vertical segment" th:each="question : ${page.records}">
+                            <div class="ui middle aligned mobile reversed stackable grid">
+                                <div class="ui column">
+                                    <h3 class="ui header"><a href="#" th:href="@{/bbs/question/{id}(id=${question.id})}"
+                                                             class="index-black" th:text="${question.title}">标题</a></h3>
+                                    <p class="index-text des" th:text="${question.descriptionView}+'...'">
+                                        文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容</p>
+                                    <!--                                <div class="ui horizontal list">-->
+                                    <!--                                    <div class="item">-->
+                                    <!--                                        <img style="width: 100px !important;height: 100px !important;" th:src="@{${question.}}"-->
+                                    <!--                                             alt="" class="ui rounded image">-->
+                                    <!--                                    </div>-->
+                                    <!--                                </div>-->
+                                    <div class="ui grid">
+                                        <div class="eleven wide column">
+                                            <div class="ui mini horizontal link list">
+                                                <div class="item">
+                                                    <img alt="" class="ui avatar image" th:src="@{${question.user.avatar}}"
+                                                         src="">
+                                                    <div class="content">
+                                                        <a href="#" th:href="@{/user/{id}/profile(id=${question.user.id})}" class="header"><span
+                                                                th:text="${question.user.username}">作者</span></a>
+                                                    </div>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="calendar icon"></i><span
+                                                        th:text="${#dates.format(question.updateTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-01 15:30:00</span>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="comment outline icon"></i><span></span>
+                                                </div>
+                                                <div class="item">
+                                                    <span>2020-03-01 15:30</span>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="eye icon"></i><span th:text="${question.viewCount}">123</span>
+                                                </div>
+                                                <div class="item">
+                                                    <i class="rss icon"></i><span></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui bottom attached segment" th:if="${page.pages}>1">
+                        <div class="ui middle aligned three column grid">
+                            <div class="left aligned column" style="width: 100px !important;">
+                                <a href="#" th:href="@{/bbs/(current=${page.current}-1)}" th:unless="${page.current>1}"
+                                   class="ui mini teal basic button">上一页</a>
+                            </div>
+                            <div class="center aligned column index-mobile-hide-search" style="width: 500px !important;">
+                                <a href="#" th:href="@{/bbs/(current=${index})}" class="ui mini teal basic button"
+                                   th:each="index : ${index}" th:text="${index}">1</a>
+                            </div>
+                            <div class="right aligned column" style="width: 100px !important;">
+                                <a href="#" th:href="@{/bbs/(current=${page.current}+1)}"
+                                   th:unless="${page.current!=page.pages}" class="ui mini teal basic button">下一页</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--右边的内容-->
+                <div class="four wide column">
+                    <!--标签-->
+                    <div class="ui segments">
+                        <div class="ui secondary segment">
+                            <div class="ui two column grid">
+                                <div class="column">
+                                    <i class="tags icon"></i>标签
+                                </div>
+                                <div class="right aligned column">
+                                    <a href="#" target="_blank">more <i
+                                            class="angle double right icon"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui teal segment" >
+                            <a href="#" th:each="tag : ${tags}" th:href="@{/bbs/tag/{tagId}(tagId=${tag.id})}"
+                               class="ui teal basic left pointing label index-margin-tb-tiny">
+                                <span th:text="${tag.name}">Java</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--底部footer-->
+<footer th:replace="fragments/fragments::footer"></footer>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="../../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+<script src="../../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../../static/lib/scrollTo/jquery.scrollTo.min.js"
+        th:src="@{/lib/scrollTo/jquery.scrollTo.min.js}"></script>
+<script src="../../static/lib/waypoints/jquery.waypoints.min.js"
+        th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.index-item').toggleClass('index-mobile-hide');
+    });
+
+    $('.toc').popup({
+        popup: $('.toc-container.popup'),
+        on: 'click',
+        position: 'left center'
+    });
+    $('.ui.dropdown').dropdown();
+</script>
+<!--/*/</th:block>/*/-->
+<script>
+    window.onload = function () {
+        var closable = window.localStorage.getItem("closable");
+        if (closable) {
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
+</body>
+</html>

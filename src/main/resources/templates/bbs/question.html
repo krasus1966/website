@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title th:text="${question.title}">首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+    <link rel="stylesheet" href="../../static/lib/simditor/css/simditor.css"
+          th:href="@{/static/lib/simditor/css/simditor.css}">
+</head>
+<body>
+<nav th:replace="fragments/fragments::nav(2)" class="ui inverted attached segment index-padding-tb-mini"></nav>
+<div class="paddings">
+    <div class="ui stackable grid">
+        <div class="eleven wide column" id="sidebar">
+            <div id="waypoint" class="index-container-small index-padding-tb-big" style="margin-right: 0 !important;">
+                <div class="ui container">
+                    <div class="ui top attached segment">
+                        <div class="ui vertical link list">
+                            <div class="item">
+                                <div class="ui horizontal link list">
+                                    <div class="item">
+                                        <h2 class="ui header" th:text="${question.title}">这是一个标题</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ui horizontal link list">
+                                    <div class="item">
+                                        阅读数：<span th:text="${question.viewCount}">123</span>
+                                    </div>
+<!--                                    <div class="item">-->
+<!--                                        关注数：<span th:text="${question.likeCount}">123</span>-->
+<!--                                    </div>-->
+                                    <div class="item">
+                                        最后回复时间：<span th:text="${#dates.format(question.updateTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-01</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="ui breadcrumb">
+                                    <div class="section" th:each="tag : ${question.tags.split(',')}">
+                                        <i class="tag icon"></i>[[${tag}]]
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui attached padded segment">
+                        <div class="ui vertical link list segment">
+                            <div class="item">
+                                <div class="ui grid">
+                                    <div class="three wide column bordered">
+                                        <div class="ui vertical link list">
+                                            <div class="item">
+                                                <img alt="" th:src="@{${question.user.avatar}}" class="ui image bordered"
+                                                     src="" style="width: 100px!important; height: 100px!important;">
+                                                <div class="content" style="margin: 15px!important;">
+                                                    <a href="#" th:href="@{/user/{id}/profile(id=${question.user.id})}" class="header" th:text="${question.user.username}">作者</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="thirteen wide column">
+                                        <div class="column">
+                                            <!--文章正文-->
+                                            <div style="color: #333 !important;" th:utext="${question.description}">帖子内容</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right floated column" style="position: relative!important;">
+                                    1楼
+
+                                    发布时间：<span
+                                        th:text="${#dates.format(question.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-01</span>
+                                    修改时间<span
+                                        th:text="${#dates.format(question.updateTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-01</span>
+                                    <a th:href="'/bbs/question/'+${question.id}+'/input'"
+                                       th:if="${session.user!=null&&session.user.username == question.user.username}">编辑</a>
+                                </div>
+                                <div class="ui divider" style="margin-top: 30px !important;"></div>
+                            </div>
+                            <div id="comment-container" class="item"
+                                 th:each="questionComment : ${question.questionCommentDTOList}">
+                                <div class="ui grid">
+                                    <div class="three wide column bordered">
+                                        <div class="ui vertical link list">
+                                            <div class="item">
+                                                <img alt="" th:src="@{${questionComment.user.avatar}}" class="ui image bordered"
+                                                     src="" style="width: 100px!important; height: 100px!important;">
+                                                <div class="content" style="margin: 15px!important;">
+                                                    <a href="#" class="header"
+                                                       th:text="${questionComment.user.username}">作者</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="thirteen wide column">
+                                        <div class="column">
+                                            <!--文章正文-->
+                                            <div style="color: #333 !important;min-height: 160px!important;"
+                                                 th:utext="${questionComment.comment}">
+                                                帖子内容
+                                            </div>
+                                        </div>
+                                        <div class="right floated column bottom right attached"
+                                             style="position: relative!important;">
+                                            <div class="row">
+                                                <div class="column">
+                                                    发布时间：<span
+                                                        th:text="${#dates.format(questionComment.createTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-01</span>
+                                                    最后修改时间<span
+                                                        th:text="${#dates.format(questionComment.updateTime,'yyyy-MM-dd HH:mm:ss')}">2020-03-01</span>
+<!--                                                    <a th:href="@{'/bbs/comment/'+${questionComment.id}+'/input'}"-->
+<!--                                                       th:if="${session.user!=null and session.user.username == questionComment.user.username}">编辑</a>-->
+                                                    <a class="reply" th:class="${'reply-'+questionComment.id}+' '+'reply'"
+                                                       th:attr="data-commentid=${questionComment.id},data-commentnickname=${questionComment.user.nickname}"
+                                                       data-commentid="1" data-commentnickname="Matt"
+                                                       th:data-id="${questionComment.id}" onclick="showSecondComment(this)">回复([[${questionComment.replyCount}]])</a>
+                                                </div>
+                                                <div class="column">
+                                                    <div th:id="${'second-comment-'+questionComment.id}"
+                                                         class="ui collapsed comments"
+                                                         style="border: 2px solid #f0f1f2!important;background: #f7f8fa !important;">
+                                                        <div th:id="${'second-comment-load-'+questionComment.id}">
+                                                            <div th:fragment="commentArea">
+                                                                <div class="comment"
+                                                                     th:each="secondComment:${SecondComment}"
+                                                                     style="border-bottom: 2px solid #f0f1f2!important">
+                                                                    <a class="avatar">
+                                                                        <img class="ui tiny image"
+                                                                             th:src="@{${secondComment.user.avatar}}">
+                                                                    </a>
+                                                                    <div class="content">
+                                                                        <a class="author" th:href="@{/user/{id}/profile(id=${secondComment.user.id})}"
+                                                                           th:text="${secondComment.user.nickname}">Matt</a>
+                                                                        <div class="metadata">
+                                                                <span class="date"
+                                                                      th:text="${#dates.format(secondComment.updateTime,'yyyy-MM-dd HH:mm:ss')}">Today at 5:42PM</span>
+                                                                        </div>
+                                                                        <div class="text"
+                                                                             th:text="${'回复'+secondComment.comment}">
+                                                                            How artistic!
+                                                                        </div>
+                                                                        <div class="actions">
+                                                                            <a class="reply"
+                                                                               th:attr="data-commentid=${secondComment.id},data-commentnickname=${secondComment.user.nickname}"
+                                                                               onclick="reply(this)">回复</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ui fluid action input">
+                                                            <input type="hidden" name="second-id"
+                                                                   th:value="${questionComment.id}">
+                                                            <input type="hidden" name="second-type" th:value="2">
+                                                            <input name="second-comment-input" type="text" placeholder="回复">
+                                                            <div th:data-id="${questionComment.id}" class="ui button"
+                                                                 onclick="secondCommentPost(this)">回复
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ui divider" style="margin-top: 30px !important;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui bottom attached segment">
+                        <!--留言区域列表-->
+                        <div class="ui comments">
+                            <div class="ui threaded comments" style="max-width: 100%">
+                                <div class="ui dividing">
+                                    <h5>发表评论</h5>
+                                    <div class="ui horizontal list" th:if="${session.user != null}">
+                                        <div class="item">
+                                            <img class="ui avatar image" th:src="@{${session.user.avatar}}" alt="用户头像">
+                                        </div>
+                                        <div class="item">
+                                            <h5 th:text="${session.user.nickname}"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="comment-form" class="ui form">
+                            <input type="hidden" id="question_id" name="question.id" th:value="${question.id}">
+                            <div class="field">
+                                <textarea id="input_content" name="input_content"></textarea>
+                            </div>
+                            <div class="fields">
+                                <div class="field index-mobile-wide index-margin-bottom-small ">
+                                    <button type="button" id="commentpost-btn" class="ui teal button index-mobile-wide"><i
+                                            class="edit icon"></i>发布
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="five wide column bbs-mobile-hide" style="margin-top: 3em!important;">
+            <div class="ui close rail index-margin-top">
+                <div class="ui sticky"
+                     style="left: 1293.5px; width: 300px; height: 287px;">
+                    <div class="ui attached segment" id="otherQuestion">
+                        <div class="ui secondary vertical following fluid accordion menu" th:fragment="otherQuestion">
+                            <div class="item"><b>相关问题</b></div>
+                            <div class="content menu active">
+                                <a class="item transition visible" th:each="otherQuestion : ${otherQuestions}" th:href="@{'/bbs/question/'+${otherQuestion.id}}" th:text="${otherQuestion.title}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<footer th:replace="fragments/fragments::footer"></footer>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="../../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+<script src="../../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../../static/lib/scrollTo/jquery.scrollTo.min.js"
+        th:src="@{/lib/scrollTo/jquery.scrollTo.min.js}"></script>
+<script src="../../static/lib/waypoints/jquery.waypoints.min.js"
+        th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.index-item').toggleClass('index-mobile-hide');
+    });
+
+    $('.toc').popup({
+        popup: $('.toc-container.popup'),
+        on: 'click',
+        position: 'left center'
+    });
+    $('.ui.dropdown').dropdown();
+</script>
+<!--/*/</th:block>/*/-->
+<script>
+
+    function showSecondComment(obj) {
+        var id = obj.getAttribute("data-id");
+        $("#second-comment-" + id).toggleClass("collapsed");
+        $(".reply-" + id).toggleClass("comment-active");
+        $("[name='second-id']").val(id);
+        var subCommentContainer = $("#second-comment-" + id);
+        loadSecond(id)
+
+
+        // $.getJSON("/bbs/secondcomment/" + id, function (data) {
+        //     console.log(data);
+        //
+        //     var items = [];
+        //     $.each(data.data.reverse(),function (index,comment) {
+        //         var c = $("<div/>",{
+        //             "class":"comments",
+        //             "style":"border-bottom: 2px solid #f0f1f2!important",
+        //             html: $("<a></a>",{
+        //                 "class":"avatar",
+        //                 html:$("<img>",{
+        //                     "class":"ui tiny image",
+        //                     "src":comment.user.avatar
+        //                 })
+        //             }),
+        //         });
+        //         subCommentContainer.prepend(c);
+        //     })
+        // })
+    }
+
+    function loadSecond(id) {
+        $("#second-comment-load-" + id).load("/bbs/secondcomments/" + id);
+    };
+    var editor;
+    var textmessage;
+    if ([[${session.user != null}]]) {
+        textmessage = "请输入评论信息...";
+        editor = new Simditor({
+            textarea: $('#input_content'),
+            placeholder: textmessage,
+        })
+    } else {
+        textmessage = "请先登录";
+        $("#input_content").attr("readonly", "");
+        $("#input_content").attr("placeholder", textmessage);
+    }
+
+    // $(function () {
+    //     $("#comment-container").load("[[@{/bbs/comments/{id}(id=${question.id})}]]");
+    // });
+
+    $('#commentpost-btn').click(function () {
+        var boo = $("[name = 'input_content']").val();
+        if (boo !== '') {
+            console.log("校验成功");
+            var questionId = $("#question_id").val();
+            var content = $("#input_content").val();
+            postData(questionId, 1, content);
+            clearContent();
+        } else {
+            alert("请输入评论内容")
+        }
+    });
+
+    function clearContent() {
+        $("[name='input_content']").val('');
+        editor.setValue('');
+    }
+
+    function reply(obj) {
+        var commentNickname = $(obj).data('commentnickname');
+        var secondCommentId = $(obj).data('commentid');
+        console.log(obj);
+        $("[name='second-comment-input']").attr("value", "@" + commentNickname);
+    }
+
+    function secondCommentPost(obj) {
+        var id = obj.getAttribute("data-id");
+        var commentId = $("[name='second-id']").val();
+        var type = $("[name='second-type']").val();
+        var second_comment1 = $("#second-comment-" + id + " " + "[name='second-comment-input']");
+        console.log(id);
+        var second_comment = $("#second-comment-" + id + " " + "[name='second-comment-input']").val();
+        if (second_comment !== '') {
+            console.log("校验成功");
+            console.log(commentId, type, second_comment);
+            console.log(second_comment);
+            postData(commentId, type, second_comment)
+        } else {
+            alert("请输入评论内容")
+        }
+
+    }
+
+    function postData(targetId, type, content) {
+        var data = {
+            "parentId": targetId,
+            "comment": content,
+            "type": type,
+            "questionId":[[${question.id}]]
+        };
+        $.ajax({
+            type: "POST",
+            contentType: "application/json;charset=UTF-8",
+            url: "/bbs/questioncomment",
+            data: JSON.stringify(data),
+            success: function (response) {
+                if (response.code == 200) {
+                    window.location.reload();
+                } else {
+                    if (response.code == 1001) {
+                        var isAccepted = confirm(response.message);
+                        if (isAccepted) {
+                            window.open("/user/login");
+                            window.localStorage.setItem("closable", true);
+                        }
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            },
+            dataType: "json"
+        })
+    }
+    $('.ui.sticky')
+        .sticky({
+            context: '#sidebar'
+        })
+    ;
+    $(function (obj) {
+        $("#otherQuestion").load("[[@{/bbs/otherQuestion/{id}/{tags}(id=${question.id},tags=${question.tags})}]]");
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+</head>
+<body>
+<nav th:replace="fragments/fragments::nav(0)" class="ui inverted attached segment index-padding-tb-mini"></nav>
+<div class="paddings">
+    <div class="index-container index-padding-tb-big">
+        <div>
+            <h3>[[${user.nickname}]]的资料</h3>
+            <div class="ui stackable grid">
+                <!--            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">-->
+                <!--                <i class="close icon"></i>-->
+                <!--                <div class="header">提示：</div>-->
+                <!--                <p th:text="${message}">操作信息</p>-->
+                <!--            </div>-->
+                <!--博客列表-->
+
+                <div class="twelve wide column">
+                    <!-- 这里用fragments 替换为通用样式 -->
+                    <div class="twelve wide column">
+                        <!-- 这里用fragments 替换为通用样式 -->
+                        <div th:replace="fragments/user_fragments::topselectuser(${select})">
+
+                        </div>
+                        <div class="ui bottom attached segment"  th:id="${area}">
+                            <div th:replace="fragments/user_fragments::${area}">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 这里用fragments 替换为通用样式 -->
+                <!-- 用户卡片 -->
+                <div class="four wide column">
+                    <div class="ui card">
+                        <div class="image">
+                            <img th:src="@{${user.avatar}}"/>
+                        </div>
+                        <div class="content">
+                            <a class="header" th:text="${user.nickname}">用户昵称</a>
+                            <div class="description" th:text="${user.description}">
+                                个人介绍
+                            </div>
+                        </div>
+                        <div class="extra content">
+                            <a>
+                                <div class="ui teal left pointing basic label index-margin-tb-tiny" th:each="tag : ${user.tags.split(',')}" th:text="${tag}">技术</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments/fragments::footer"></footer>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="../../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+<script src="../../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+<script src="../../static/lib/scrollTo/jquery.scrollTo.min.js"
+        th:src="@{/lib/scrollTo/jquery.scrollTo.min.js}"></script>
+<script src="../../static/lib/waypoints/jquery.waypoints.min.js"
+        th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.index-item').toggleClass('index-mobile-hide');
+    });
+
+    $('.toc').popup({
+        popup: $('.toc-container.popup'),
+        on: 'click',
+        position: 'left center'
+    });
+    $('.ui.dropdown').dropdown();
+</script>
+<!--/*/</th:block>/*/-->
+<script>
+    $('#[[${area}]]').load("/user/[[${userId}]]/profile/[[${area}]]");
+</script>
+</body>
+</html>

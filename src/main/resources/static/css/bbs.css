@@ -1,0 +1,9 @@
+.comment-active{
+    color: #00c4ff!important;
+}
+
+@media screen and (max-width: 1000px){
+    .bbs-mobile-hide{
+        display: none !important;
+    }
+}

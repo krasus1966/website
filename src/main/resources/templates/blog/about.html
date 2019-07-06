@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/fragments::head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>关于我</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css">
+</head>
+<body>
+<div>
+    <!--导航-->
+    <nav th:replace="fragments/fragments::nav(2)" ></nav>
+
+    <!--中间内容-->
+    <div class="index-container index-padding-tb-big">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <div class="eleven wide column">
+                    <img src="../../static/img/1f1e6230a4deab48.jpg" alt="" class="ui rounded image">
+                </div>
+                <div class="five wide column">
+                    <div class="ui top attached segment">
+                        <div class="ui header">关于我</div>
+                    </div>
+                    <div class="ui attached segment">
+                        <p class="index-text-thin">个人说明</p>
+                    </div>
+                    <div class="ui attached segment">
+                        <div class="ui orange left pointing basic label">编程</div>
+                    </div>
+                    <div class="ui attached segment">
+                        <div class="ui teal left pointing basic label index-margin-tb-tiny">技术</div>
+                    </div>
+                    <div class="ui bottom attached segment">
+                        <a href="" class="ui circular icon button"><i class="github icon"></i></a>
+                        <a href="" class="ui qq circular icon button" data-content="2134123985" data-position="bottom center"><i class="qq icon"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+<!--底部footer-->
+    <footer th:replace="fragments/fragments::footer"></footer>
+</div>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    $('.menu.toggle').click(function () {
+        $('.index-item').toggleClass('index-mobile-hide');
+    });
+
+    $('.qq').popup();
+
+</script>
+</body>
+</html>

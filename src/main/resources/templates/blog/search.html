@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>搜索结果</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+</head>
+<body>
+<div>
+    <!--导航-->
+    <nav th:replace="fragments/fragments::nav(0)"></nav>
+<div class="paddings">
+    <!--中间内容-->
+    <div class="index-container-small index-padding-tb-big">
+        <div class="ui container">
+            <div class="ui top attached segment">
+                <div class="ui middle aligned two column grid">
+                    <div class="column">
+                        <h3 class="ui teal header">搜索结果</h3>
+                    </div>
+                    <div class="right aligned column">
+                        共<h2 class="ui orange header index-inline-blog index-text-thin" th:text="${page.totalElements}"> 14 </h2>个
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui top attached teal segment">
+                <div class="ui padded vertical segment index-padding-tb-big" th:each="blog : ${page.content}">
+                    <div class="ui middle aligned mobile reversed stackable grid" >
+                        <div class="ui eleven wide column">
+                            <h3 class="ui header"><a href="#" th:href="@{/blog/{id}(id=${blog.id})}" class="index-black" th:text="${blog.title}">标题</a></h3>
+                            <p class="index-text" th:text="${blog.description}+'...'">
+                                文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容文章内容</p>
+                            <div class="ui grid">
+                                <div class="eleven wide column">
+                                    <div class="ui mini horizontal link list">
+                                        <div class="item">
+                                            <img alt="" class="ui avatar image" th:src="@{${blog.user.avatar}}">
+                                            <div class="content"><a href="#" class="header" th:text="${blog.user.nickname}">作者</a></div>
+                                        </div>
+                                        <div class="item">
+                                            <i class="calendar icon"></i><span th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-03-01</span>
+                                        </div>
+                                        <div class="item">
+                                            <i class="eye icon"></i><span th:text="${blog.views}">123</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="right aligned five wide column">
+                                    <a href="#" target="_blank"
+                                       class="ui teal basic label index-padding-tiny index-text-thin" th:text="${blog.type.name}">认知升级</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="five wide column">
+                            <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank">
+                                <img alt="" class="ui rounded image" th:src="@{${blog.firstPicture}}">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="ui bottom attached segment" th:if="${page.totalPages}>1">
+                <div class="ui middle aligned two column grid">
+                    <div class="column">
+                        <a href="#" th:href="@{/(page=${page.number}-1)}"  th:unless="${page.first}" class="ui mini teal basic button">上一页</a>
+
+                    </div>
+                    <div class="right aligned column">
+                        <a href="#" th:href="@{/(page=${page.number}+1)}"  th:unless="${page.last}" class="ui mini teal basic button">下一页</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!--底部footer-->
+    <footer th:replace="fragments/fragments::footer"></footer>
+</div>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+
+<script>
+    $('.menu.toggle').click(function () {
+        $('.index-item').toggleClass('index-mobile-hide');
+    });
+
+
+</script>
+</body>
+</html>

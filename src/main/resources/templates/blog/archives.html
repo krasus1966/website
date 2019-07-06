@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>归档</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+</head>
+<body>
+<div>
+    <!--导航-->
+    <nav th:replace="fragments/fragments::nav(0)"></nav>
+    <div class="paddings">
+        <!--中间内容-->
+        <div class="index-container-small index-padding-tb-big">
+            <div class="ui container">
+                <div class="ui top attached padded segment">
+                    <div class="ui middle aligned two column grid">
+                        <div class="column">
+                            <h3 class="ui teal header">归档</h3>
+                        </div>
+                        <div class="right aligned column">
+                            共<h2 class="ui orange header index-inline-blog index-text-thin" th:text="${blogCount}"> 114 </h2>篇博客
+                        </div>
+                    </div>
+                </div>
+
+                <th:block th:each="item:${archiveMap}">
+                    <h3 class="ui center aligned header" th:text="${item.key}">2017</h3>
+                    <div class="ui fluid vertical menu">
+                        <a href="#"  class="item" th:href="@{/blog/{id}(id=${blog.id})}" th:each="blog:${item.value}">
+                    <span>
+                        <i class="mini teal circle icon"></i> <span th:text="${blog.title}">标题</span>
+                        <div class="ui teal basic left pointing label index-padding-mini" th:text="${#dates.format(blog.updateTime,'MMMdd')}">9月13</div>
+                    </span>
+                            <div class="ui orange basic left pointing label index-padding-mini" th:text="${blog.flag}">原创</div>
+                        </a>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+
+    <!--底部footer-->
+    <footer th:replace="fragments/fragments::footer"></footer>
+</div>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+
+<script>
+    $('.menu.toggle').click(function () {
+        $('.index-item').toggleClass('index-mobile-hide');
+    });
+
+
+</script>
+</body>
+</html>

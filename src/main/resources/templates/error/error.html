@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>出错啦</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+</head>
+<body>
+<nav th:replace="fragments/fragments::nav(0)"></nav>
+
+<div class="paddings">
+    <div class=" index-container-small index-padding-tb-massive">
+        <div class="ui error message index-padding-tb-huge">
+            <div class="ui container">
+                <h4 th:text="'错误代码：'+${code}">500</h4>
+                <p th:text="${message}">页面出错，请联系管理员</p>
+                <p>QQ：2134123985</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <div th:utext="'&lt;!--'" th:remove="tag"></div>
+    <div th:utext="'Failed Request URL : '+${url}" th:remove="tag"></div>
+    <div th:utext="'Exception message : '+${url}" th:remove="tag"></div>
+    <ul th:remove="tag">
+        <li th:each="st : ${exception.stackTrace}" th:remove="tag"><span th:utext="${st}" th:remove="tag"></span></li>
+    </ul>
+    <div th:utext="'--&gt'" th:remove="tag">
+
+    </div>
+</div>
+<!--底部footer-->
+<footer th:replace="fragments/fragments::footer"></footer>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+</body>
+</html>

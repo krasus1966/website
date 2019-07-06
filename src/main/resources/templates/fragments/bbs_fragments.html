@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="script">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+    <script src="../../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+    <script src="../../static/lib/scrollTo/jquery.scrollTo.min.js"
+            th:src="@{/lib/scrollTo/jquery.scrollTo.min.js}"></script>
+    <script src="../../static/lib/waypoints/jquery.waypoints.min.js"
+            th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.index-item').toggleClass('index-mobile-hide');
+        });
+
+        $('.toc').popup({
+            popup: $('.toc-container.popup'),
+            on: 'click',
+            position: 'left center'
+        });
+        $('.ui.type.dropdown').dropdown();
+
+        $('.ui.dropdown').dropdown();
+    </script>
+</th:block>
+</body>
+</html>

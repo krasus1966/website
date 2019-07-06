@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 196610121
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    show-sql: true
+
+
+logging:
+  level:
+    root: info
+    top.krasus1966.website: debug
+  file: log/blog-dev.log
+
+server:
+  port: 8081
+
+mybatis-plus:
+  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    cache-enabled: true
+    local-cache-scope: session

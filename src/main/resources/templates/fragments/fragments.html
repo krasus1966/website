@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title th:replace="${title}">头部片段</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/typo.css" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" href="../../static/lib/prism/prism.css" th:href="@{/lib/prism/prism.css}">
+    <link rel="stylesheet" href="../../static/lib/tocbot/tocbot.css" th:href="@{/lib/tocbot/tocbot.css}">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+    <link rel="stylesheet" href="../../static/lib/simditor/css/simditor.css"
+          th:href="@{/static/lib/simditor/css/simditor.css}">
+
+
+</head>
+<body>
+<nav th:fragment="nav(n)" class=" ui inverted attached segment index-padding-tb-mini">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui teal header item index-text-thin">Krasus1966</h2>
+            <a href="#" th:href="@{/blog/}" class="index-item item index-mobile-hide" th:classappend="${n==1} ? 'active'"><i
+                    class="small home icon"></i>文章</a>
+            <a href="#" th:href="@{/bbs/}" class="index-item item index-mobile-hide" th:classappend="${n==2} ? 'active'"><i
+                    class="small feed icon"></i>帖子</a>
+            <a href="#" th:href="@{/user/profile}" class="index-item item index-mobile-hide" th:classappend="${n==3} ? 'active'"><i
+                    class="small user icon"></i>个人中心</a>
+            <a href="#" th:href="@{/user/replies}" class="index-item item index-mobile-hide"
+               th:classappend="${n==4} ? 'active'" th:if="${session.user!=null}">
+                <i class="mail icon"></i>新消息
+                <div class="ui label"><span th:class="unReadbbs" th:fragment="unReadbbs" th:text="${unReadbbs}"></span></div>
+            </a>
+            <div class="right item index-item index-mobile-hide ">
+<!--                <form name="search" action="#" method="post" target="_blank">-->
+<!--                    <div class="ui icon inverted transparent input">-->
+<!--                        <input name="query" type="text" placeholder="搜索">-->
+<!--                        <i class="search link icon"></i>-->
+<!--                    </div>-->
+<!--                </form>-->
+            </div>
+            <div class="right item index-item index-mobile-hide">
+                <div class="ui segments">
+                    <div class="ui breadcrumb" th:if="${session.user == null}">
+                        <img class="ui avatar image" th:src="@{../../static/img/defaultAvatar.jpg}">
+                        <a href="#" th:href="@{'/user/login?forwardURL='+${#request.getRequestURI()}}" class="section">登录</a>
+                        <div class="teal divider"> /</div>
+                        <a href="#" th:href="@{/user/register}" class="section">注册</a>
+                    </div>
+                    <div class="ui user dropdown item" th:unless="${session.user ==null}">
+                        <img th:src="@{${session.user.avatar}}" alt="" class="ui avatar image">
+                        <div class="text">
+                            <p th:text="${session.user.username}">用户名</p>
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu" th:if="${session.user.type == 0}">
+                            <a href="#" class="item" th:href="@{/user/profile/input}">修改资料</a>
+                            <a href="#" class="item" th:href="@{/user/bbs/input}">发布问题</a>
+                            <a href="#" class="item" th:href="@{/user/blogs/input}">发表文章</a>
+                            <a href="#" class="item" th:href="@{/user/questions}">问题管理</a>
+                            <a href="#" class="item" th:href="@{/user/blogs}">文章管理</a>
+                            <a href="#" class="item" th:href="@{/blog/archives}">文章归档</a>
+                            <a href="#" class="item" th:href="@{/user/replies}">新消息</a>
+                            <a href="#" th:href="@{'/user/logout?forwardURL='+${#request.getRequestURI()}}" class="item">注销</a>
+                        </div>
+                        <div class="menu" th:if="${session.user.type == 1}">
+                            <a href="#" class="item" th:href="@{/user/profile/input}">修改资料</a>
+                            <a href="#" class="item" th:href="@{/user/bbs/input}">发布问题</a>
+                            <a href="#" class="item" th:href="@{/user/blogs/input}">发布文章</a>
+                            <a href="#" class="item" th:href="@{/user/questions}">问题管理</a>
+                            <a href="#" class="item" th:href="@{/user/blogs}">文章管理</a>
+                            <a href="#" class="item" th:href="@{/blog/archives}">文章归档</a>
+                            <a href="#" class="item" th:href="@{/user/replies}">新消息</a>
+                            <a href="#" class="item" th:href="@{/user/types}">管理分类</a>
+                            <a href="#" class="item" th:href="@{/user/tags}">管理标签</a>
+                            <a href="#" class="item" th:href="@{/admin/}">管理界面</a>
+                            <a href="#" th:href="@{'/user/logout?forwardURL='+${#request.getRequestURI()}}" class="item">注销</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button index-right-top index-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+
+<footer class="ui inverted vertical segment index-padding-tb-massive" th:fragment="footer">
+<!--    <footer class="index-padding-tb-massive"  th:fragment="footer">-->
+    <div class="ui center aligned container">
+<!--        <div class="ui inverted divided stackable grid">-->
+<!--            <div class="three wide column">-->
+<!--                <div class="ui inverted link list">-->
+<!--                    <div class="item">-->
+<!--&lt;!&ndash;                        <img th:src="@{${session.user.avatar}}" class="ui rounded image" alt=""&ndash;&gt;-->
+<!--&lt;!&ndash;                             style="width: 100px">&ndash;&gt;-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="three wide column">-->
+<!--                <h4 class="ui inverted header index-text-thin index-text-spaced ">最新博客</h4>-->
+<!--                <div id="newblog-container">-->
+<!--                    <div class="ui inverted link list" th:fragment="newblogList">-->
+<!--                        <a href="#" th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="item"-->
+<!--                           th:each="blog : ${newblogs}" th:text="${blog.title}">博客内容</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="three wide column">-->
+<!--                <h4 class="ui inverted header index-text-thin index-text-spaced ">最新博客</h4>-->
+<!--                <div class="ui inverted link list">-->
+<!--                    <a href="#" class="item">博客内容</a>-->
+<!--                    <a href="#" class="item">博客内容</a>-->
+<!--                    <a href="#" class="item">博客内容</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="seven wide column">-->
+<!--                <h4 class="ui inverted header index-text-thin index-text-spaced ">最新博客</h4>-->
+<!--                <p class="index-text-thin index-text-spaced index-opacity-mini">-->
+<!--                    最新博客最新博客最新博客最新博客最新博客最新博客最新博客最新博客最新博客最新博客最新博客最新博客最新博客最新博客</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="ui inverted section divider"></div>-->
+        <p class="index-text-thin index-text-spaced index-opacity-tiny"> © 2009-2019 Aliyun.com 版权所有。ICP证：<a href="http://www.beian.miit.gov.cn" target="_blank">蒙ICP备19000995号</a></p>
+    </div>
+</footer>
+
+<th:block th:fragment="script">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../static/lib/tocbot/tocbot.min.js" th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+    <script src="../../static/lib/prism/prism.js" th:src="@{/lib/prism/prism.js}"></script>
+    <script src="../../static/lib/scrollTo/jquery.scrollTo.min.js"
+            th:src="@{/lib/scrollTo/jquery.scrollTo.min.js}"></script>
+    <script src="../../static/lib/waypoints/jquery.waypoints.min.js"
+            th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+    <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+    <script src="../../static/lib/editormd/editormd.min.js" th:src="@{/lib/editormd/editormd.min.js}"></script>
+    <script src="../../static/lib/simditor/js/module.js" th:src="@{/static/lib/simditor/js/module.js}"></script>
+    <script src="../../static/lib/simditor/js/hotkeys.js" th:src="@{/static/lib/simditor/js/hotkeys.js}"></script>
+    <script src="../../static/lib/simditor/js/uploader.js" th:src="@{/static/lib/simditor/js/uploader.js}"></script>
+    <script src="../../static/lib/simditor/js/simditor.js" th:src="@{/static/lib/simditor/js/simditor.js}"></script>
+    <script>
+        $('.menu.toggle').click(function () {
+            $('.index-item').toggleClass('index-mobile-hide');
+        });
+
+        $('.toc').popup({
+            popup: $('.toc-container.popup'),
+            on: 'click',
+            position: 'left center'
+        });
+        $('.ui.type.dropdown').dropdown();
+
+        $('.ui.dropdown').dropdown();
+
+        $("#newblog-container").load(/*[[@{/blog/footer/newblog}]]*/"/blog/footer/newblog");
+        $(".unReadbbs").load("/user/getUnReadbbsReply");
+    </script>
+</th:block>
+</body>
+</html>

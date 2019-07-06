@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="multipart/form-data;charset=utf-8">
+    <title>注册</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/blog.css" th:href="@{/css/blog.css}">
+    <link rel="stylesheet" href="../../static/css/bbs.css" th:href="@{/css/bbs.css}">
+</head>
+<body>
+<nav th:replace="fragments/fragments::nav(0)" class="ui inverted attached segment index-padding-tb-mini"></nav>
+<div class="paddings">
+    <div class="index-container-small index-padding-tb-massive" style="max-width: 30em!important;">
+        <div class="ui container">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <a class="ui button" th:href="@{/user/profile/updatePwd}">修改密码</a>
+                    <form class="ui large form" method="post" th:action="@{/user/profile/toUpdateProfile}"
+                          enctype="multipart/form-data">
+                        <div class="ui stacked segment">
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="nickname" placeholder="昵称" th:value="${user.nickname}">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="mail icon"></i>
+                                    <input type="email" name="email" placeholder="邮箱" th:value="${user.email}">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui selection dropdown">
+                                    <input type="hidden" name="sex">
+                                    <div class="default text"><i class="man icon"></i>男</div>
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <div class="item" data-value="男"><i class="man icon"></i>男</div>
+                                        <div class="item" data-value="女"><i class="woman icon"></i>女</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label>自我描述</label>
+                                <textarea name="description" th:text="${user.description}" ></textarea>
+                            </div>
+                            <div class="field">
+                                <div class="ui left labeled action input">
+                                    <label class="ui compact teal basic label">个人标签</label>
+                                    <div class="ui tag fluid multiple search selection type dropdown">
+                                        <input type="hidden" name="tags"  th:value="${user.tags}">
+                                        <i class="dropdown icon"></i>
+                                        <div class="default text">选择标签</div>
+                                        <div class="menu">
+                                            <div class="item" th:data-value="${tag.name}" th:each="tag :${tags}" th:text="${tag.name}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left labeled action input">
+                                    <label class="ui compact teal basic label">头像</label>
+                                    <label for="file" class="ui teal button">选择头像</label>
+                                </div>
+                                当前头像：
+                                <img style="max-width: 20em !important;" class="ui avatar image" th:src="@{${user.avatar}}">
+                                <input type="file" id="file" onchange="changepic(this)" name="avatarFile"
+                                       accept="image/jpg,image/jpeg,image/png,image/gif" style="display: none!important;">
+                                新头像预览：
+                                <img style="max-width: 20em !important;" class="ui avatar image" id="show">
+                            </div>
+                            <div class="ui center aligned container">
+                                <button class="ui button" type="button" onclick="window.history.go(-1)">返回</button>
+                                <button class="ui teal submit button" type="submit">修 改</button>
+                            </div>
+                            <!--                        <button class="ui fluid large teal submit button" type="submit">修 改</button>-->
+                        </div>
+                        <div class="ui error message"></div>
+                        <div class="ui  message" th:unless="${#strings.isEmpty(message)}" th:classappend="${status==0} ? 'negative' : 'success'">
+                            <i class="close icon"></i>
+                            <div class="header">提示：</div>
+                            <p th:text="${message}">操作信息</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="fragments/fragments::footer"></footer>
+<!--/*/<th:block th:replace="fragments/fragments::script">/*/-->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
+<!--/*/</th:block>/*/-->
+<script>
+    $('.message .close').on('click', function () {
+        $(this).closest(".message").transition('fade');
+    });
+
+    function changepic(file) {
+        var fileSize = 0;
+        var fileMaxSize = 2048;//2M
+        var filePath = file.value;
+        if (filePath) {
+            fileSize = file.files[0].size;
+            var size = fileSize / 1024;
+            if (size > fileMaxSize) {
+                alert("文件大小不能大于2M！");
+                file.value = "";
+                document.getElementById("show").src = '';
+                return false;
+            } else if (size <= 0) {
+                alert("文件大小不能为0M！");
+                file.value = "";
+                document.getElementById("show").src = '';
+                return false;
+            }
+        } else {
+            document.getElementById("show").src = '';
+            return false;
+        }
+
+        var fileTypes = [".jpg", ".png", ".jpeg"];
+
+        //当括号里面的值为0、空字符、false 、null 、undefined的时候就相当于false
+        if (filePath) {
+            var isNext = false;
+            var fileEnd = filePath.substring(filePath.indexOf("."));
+            for (var i = 0; i < fileTypes.length; i++) {
+                if (fileTypes[i] == fileEnd) {
+                    isNext = true;
+                    break;
+                }
+            }
+            if (!isNext) {
+                alert('不接受此文件类型');
+                file.value = "";
+                document.getElementById("show").src = '';
+                return false;
+            }
+        } else {
+            document.getElementById("show").src = '';
+            return false;
+        }
+
+
+        if (filePath) {
+            //读取图片数据
+            var filePic = file.files[0];
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var data = e.target.result;
+                //加载图片获取图片真实宽度和高度
+                var image = new Image();
+                image.onload = function () {
+                    var width = image.width;
+                    var height = image.height;
+                    console.log(width, height);
+                    if (width >= 600 | height >= 800) {
+                        alert("图片尺寸应小于800*600！");
+                        file.value = "";
+                        document.getElementById("show").src = '';
+                        return false;
+                    }
+                };
+                image.src = data;
+            };
+            reader.readAsDataURL(filePic);
+        } else {
+            document.getElementById("show").src = '';
+            return false;
+        }
+
+        var reads = new FileReader();
+        f = document.getElementById('file').files[0];
+        reads.readAsDataURL(f);
+        reads.onload = function (e) {
+            document.getElementById('show').src = this.result;
+        };
+    }
+
+    $('.ui.form').form({
+        fields: {
+            nickname: {
+                identifier: 'nickname',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入昵称'
+                }]
+            },
+            email: {
+                identifier: 'email',
+                rules: [{
+                    type: 'empty',
+                    prompt: '请输入邮箱'
+                }]
+            },
+            tags: {
+                identifier: 'tags',
+                rules: [{
+                    type: 'empty',
+                    prompt: '至少选择一个标签'
+                }]
+            }
+        }
+    })
+</script>
+</body>
+</html>

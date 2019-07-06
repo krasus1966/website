@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>博客后台</title>
+</head>
+<body>
+<div>
+    <button id="btn1">获取html</button>
+    <button id="btn2">获取text</button>
+    <div id="content"></div>
+    <textarea id="description" name="description"
+              style="display: none!important;"></textarea>
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://unpkg.com/wangeditor/release/wangEditor.min.js"></script>
+<script>
+    var E = window.wangEditor;
+    var editor2 = new E('#content');
+    var $text1 = $('#description');
+
+    editor2.customConfig.onchange = function (html) {
+        // 监控变化，同步更新到 textarea
+        $text1.val(html)
+    };
+    editor2.create();
+
+    // 初始化 textarea 的值
+
+    $text1.val(editor2.txt.html());
+</script>
+</body>
+</html>

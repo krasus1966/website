@@ -1,0 +1,216 @@
+body {
+    background: url("../img/backgroundimg.png");
+}
+
+.paddings{
+    min-height: 716px!important;
+}
+
+/* main的padding-bottom值要等于或大于footer的height值 */
+.footer {
+    position: absolute!important;
+    bottom: 0!important;
+    width: 100%!important;
+    height: 100px!important;
+}
+
+.index-center {
+    height: 57% !important;
+}
+
+textarea {
+    resize: none !important;
+}
+
+/*padding*/
+.index-padding-mini {
+    padding: 0.2em !important;
+}
+
+.index-padding-tiny {
+    padding: 0.3em !important;
+}
+
+.index-padding {
+    padding: 1em !important;
+}
+
+.index-padding-tb-mini {
+    padding-top: 0.2em !important;
+    padding-bottom: 0.2em !important;
+}
+
+.index-padding-tb-massive {
+    padding-top: 5em !important;
+    padding-bottom: 5em !important;
+}
+
+.index-padding-tb-tiny {
+    padding-top: 0.3em !important;
+    padding-bottom: 0.3em !important;
+}
+
+.index-padding-tb-small {
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+}
+
+.index-padding-tb {
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+}
+
+.index-padding-tb-large {
+    padding-top: 2em !important;
+    padding-bottom: 2em !important;
+}
+
+.index-padding-tb-big {
+    padding-top: 3em !important;
+    padding-bottom: 3em !important;
+}
+
+.index-padding-tb-huge {
+    padding-top: 4em !important;
+    padding-bottom: 4em !important;
+}
+
+.index-padding-lr-reponsive {
+    padding-left: 4em !important;
+    padding-right: 4em !important;
+}
+
+/*text*/
+.index-text {
+    font-weight: 300 !important;
+    letter-spacing: 1px !important;
+    line-height: 1.8;
+}
+
+.index-text-thin {
+    font-weight: 300 !important;
+}
+
+.index-text-spaced {
+    letter-spacing: 1px !important;
+}
+
+.index-text-lined {
+    line-height: 1.8;
+}
+
+.index-text-teal {
+    color: #00B5AD !important;
+}
+
+/*margin*/
+.index-margin-tb-tiny {
+    margin-top: 0.3em !important;
+    margin-bottom: 0.3em !important;
+}
+
+.index-margin-tb-large {
+    margin-top: 0.4em !important;
+    margin-bottom: 0.4em !important;
+}
+
+.index-margin-top-small {
+    margin-top: 0.5em !important;
+
+}
+
+.index-margin-top {
+    margin-top: 1em !important;
+}
+
+.index-margin-top-large {
+    margin-top: 2em !important;
+}
+
+.index-margin-bottom-small {
+    margin-bottom: 0.5em !important;
+}
+
+/*position*/
+.index-right-top {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.index-fixed {
+    position: fixed !important;
+    z-index: 1 !important;
+}
+
+.index-right-bottom {
+    bottom: 0 !important;
+    right: 0 !important;
+}
+
+
+/*opacity*/
+.index-opacity-mini {
+    opacity: 0.8 !important;
+}
+
+.index-opacity-tiny {
+    opacity: 0.6 !important;
+}
+
+.index-inline-blog {
+    display: inline-block !important;
+}
+
+/*container*/
+.index-container {
+    max-width: 72em !important;
+    margin: auto !important;
+}
+
+.index-container-small {
+    max-width: 60em !important;
+    margin: auto !important;
+}
+
+.index-black {
+    color: #333 !important;
+}
+
+.index-mobile-show {
+    display: none !important;
+}
+
+.editormd-dialog .editormd-image-dialog {
+    height: auto !important;
+}
+
+@media screen and (max-width: 768px) {
+    .index-mobile-hide {
+        display: none !important;
+    }
+
+    .index-mobile-show {
+        display: block !important;
+    }
+
+    .index-padding-lr-reponsive {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .index-mobile-wide {
+        width: 100% !important;
+    }
+
+    .index-mobile-lr-clear {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .index-mobile-hide-search {
+        display: none !important;
+    }
+}
